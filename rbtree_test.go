@@ -3,6 +3,8 @@ package rbtree
 import (
 	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type key int
@@ -141,4 +143,51 @@ func TestDelete2(t *testing.T) {
 	tree.Insert(key(9), "8ik")
 	tree.Delete(key(1))
 	tree.Delete(key(2))
+}
+
+func TestCeil(t *testing.T) {
+	assert := assert.New(t)
+	tree := NewTree()
+
+	tree.Insert(key(4), "1qa")
+	tree.Insert(key(2), "2ws")
+	tree.Insert(key(3), "3ed")
+	tree.Insert(key(1), "4rf")
+	tree.Insert(key(8), "5tg")
+	tree.Insert(key(5), "6yh")
+	tree.Insert(key(7), "7uj")
+	tree.Insert(key(9), "8ik")
+	tree.Insert(key(12), "9ik")
+	v := tree.Ceil(key(6))
+	assert.Equal(v, "7uj")
+	v = tree.Ceil(key(10))
+	assert.Equal(v, "9ik")
+	v = tree.Ceil(key(11))
+	assert.Equal(v, "9ik")
+	v = tree.Ceil(key(8))
+	assert.Equal(v, "5tg")
+}
+
+func TestFloor(t *testing.T) {
+	assert := assert.New(t)
+	tree := NewTree()
+
+	tree.Insert(key(4), "1qa")
+	tree.Insert(key(2), "2ws")
+	tree.Insert(key(3), "3ed")
+	tree.Insert(key(1), "4rf")
+	tree.Insert(key(8), "5tg")
+	tree.Insert(key(5), "6yh")
+	tree.Insert(key(7), "7uj")
+	tree.Insert(key(9), "8ik")
+	v := tree.Floor(key(10))
+	assert.Equal(v, "8ik")
+	v = tree.Floor(key(11))
+	assert.Equal(v, "8ik")
+	v = tree.Floor(key(15))
+	assert.Equal(v, "8ik")
+	v = tree.Floor(key(7))
+	assert.Equal(v, "7uj")
+	v = tree.Floor(key(6))
+	assert.Equal(v, "6yh")
 }

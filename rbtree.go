@@ -32,7 +32,7 @@ func NewTree() *Tree {
 
 // Find finds the node and return its value.
 func (t *Tree) Find(key Keytype) interface{} {
-	n := t.findnode(key)
+	n := t.findNode(key)
 	if n != nil {
 		return n.Value
 	}
@@ -41,15 +41,70 @@ func (t *Tree) Find(key Keytype) interface{} {
 
 // FindIt finds the node and return it as an iterator.
 func (t *Tree) FindIt(key Keytype) *node {
-	return t.findnode(key)
+	return t.findNode(key)
+}
+
+// Ceil
+// Given a value, return the closest value that is equal or bigger than it,
+// returning None when no such exists
+func (t *Tree) Ceil(key Keytype) interface{} {
+	n := t.findCeil(t.root, key)
+	if n == nil {
+		return nil
+	}
+	return n.Value
+}
+
+func (t *Tree) findCeil(n *node, key Keytype) *node {
+	var ceil *node
+	for n != nil {
+		if n.Key == key {
+			ceil = n
+			break
+		} else if key.LessThan(n.Key) {
+			ceil = n
+			n = n.left
+		} else {
+			n = n.right
+		}
+	}
+	return ceil
+}
+
+// Floor
+// Given a value, return the closest value that is equal or less than it,
+// returning None when no such exists
+func (t *Tree) Floor(key Keytype) interface{} {
+	n := t.findFloor(t.root, key)
+	if n == nil {
+		return nil
+	}
+	return n.Value
+}
+
+func (t *Tree) findFloor(n *node, key Keytype) *node {
+	var floor *node
+	for n != nil {
+		if n.Key == key {
+			floor = n
+			break
+		} else if key.LessThan(n.Key) {
+			n = n.left
+		} else {
+			floor = n
+			n = n.right
+		}
+	}
+	return floor
+}
+
+func (t *Tree) Contains(key Keytype) bool {
+	return t.findNode(key) != nil
 }
 
 // Empty checks whether the rbtree is empty.
 func (t *Tree) Empty() bool {
-	if t.root == nil {
-		return true
-	}
-	return false
+	return t.root == nil
 }
 
 // Iterator creates the rbtree's iterator that points to the minmum node.
@@ -100,7 +155,7 @@ func (t *Tree) Insert(key Keytype, value valuetype) {
 
 // Delete deletes the node by key
 func (t *Tree) Delete(key Keytype) {
-	z := t.findnode(key)
+	z := t.findNode(key)
 	if z == nil {
 		return
 	}
@@ -287,8 +342,8 @@ func (t *Tree) rightRotate(x *node) {
 	x.parent = y
 }
 
-// findnode finds the node by key and return it, if not exists return nil.
-func (t *Tree) findnode(key Keytype) *node {
+// findNode finds the node by key and return it, if not exists return nil.
+func (t *Tree) findNode(key Keytype) *node {
 	x := t.root
 	for x != nil {
 		if key.LessThan(x.Key) {
