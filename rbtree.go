@@ -55,6 +55,17 @@ func (t *Tree) Ceil(key Keytype) interface{} {
 	return n.Value
 }
 
+// Ceil
+// Given a key, return the closest value that is equal or bigger than it,
+// returning None when no such exists
+func (t *Tree) CeilKey(key Keytype) Keytype {
+	n := t.findCeil(t.root, key)
+	if n == nil {
+		return nil
+	}
+	return n.Key
+}
+
 func (t *Tree) findCeil(n *node, key Keytype) *node {
 	var ceil *node
 	for n != nil {
@@ -80,6 +91,17 @@ func (t *Tree) Floor(key Keytype) interface{} {
 		return nil
 	}
 	return n.Value
+}
+
+// FloorKey
+// Given a key, return the closest value that is equal or less than it,
+// returning None when no such exists
+func (t *Tree) FloorKey(key Keytype) Keytype {
+	n := t.findFloor(t.root, key)
+	if n == nil {
+		return nil
+	}
+	return n.Key
 }
 
 func (t *Tree) findFloor(n *node, key Keytype) *node {
