@@ -148,11 +148,15 @@ func (t *Tree) Clear() {
 // Insert inserts the key-value pair into the rbtree.
 func (t *Tree) Insert(key Keytype, value valuetype) {
 	x := t.root
-	var y *node
+	var y *node // x.parent
 
 	for x != nil {
 		y = x
-		if key.LessThan(x.Key) {
+		// if key == x.Key, replace the value and return
+		if key == x.Key {
+			x.Value = value
+			return
+		} else if key.LessThan(x.Key) {
 			x = x.left
 		} else {
 			x = x.right

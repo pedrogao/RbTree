@@ -191,3 +191,20 @@ func TestFloor(t *testing.T) {
 	v = tree.Floor(key(6))
 	assert.Equal(v, "6yh")
 }
+
+func TestInsertDup(t *testing.T) {
+	assert := assert.New(t)
+	tree := NewTree()
+
+	tree.Insert(key(4), "1qa")
+	v := tree.Find(key(4))
+	assert.Equal(v, "1qa")
+
+	tree.Insert(key(4), "2qa")
+	v = tree.Find(key(4))
+	assert.Equal(v, "2qa")
+
+	tree.Insert(key(5), "2qa")
+	v = tree.Find(key(5))
+	assert.Equal(v, "2qa")
+}
